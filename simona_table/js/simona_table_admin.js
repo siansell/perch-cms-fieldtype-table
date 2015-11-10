@@ -115,6 +115,7 @@ function initTables() {
         afterGetColHeader: function (col, TH) {
           // console.log('afterGetColHeader');
           parent.setData(this);
+          parent.setHeaders(this);
         },
         afterCreateRow: function(index, amount) {
           parent.setData(this);
