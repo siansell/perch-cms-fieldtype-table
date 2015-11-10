@@ -53,6 +53,7 @@ Optional: Set to true to hide the `<thead>` section in the output.
 
 ## Future Development
 
+- Edit column headers within Perch admin.
 - Implement individual formatting of table cells within Perch.
 - Optional data validation: for example, don't allow saving if a `numeric` cell contains text.
 - Merge cells functionality.
