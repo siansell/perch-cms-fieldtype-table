@@ -51,6 +51,10 @@ Optional. If specified, the `class` attribute is applied to the output `<table>`
 Optional: Set to true to hide the `<thead>` section in the output.
 `<perch:content id="mytable" type="simona_table" label="Editable Table" hide-headers="true" />`
 
+## Future Development
+
+- Implement individual formatting of table cells within Perch
+- Optional data validation: for example, don't allow saving if a `numeric` cell contains text.
 
 ## Credits
 
