@@ -46,6 +46,12 @@ Dropdown options should be specified by a semi-colon delimited list, as in the e
 Optional. If specified, the `class` attribute is applied to the output `<table>` element.
 `<perch:content id="mytable" type="simona_table" label="Editable Table" class="table table-striped" />`
 
+**hide-headers**
+
+Optional: Set to true to hide the `<thead>` section in the output.
+`<perch:content id="mytable" type="simona_table" label="Editable Table" hide-headers="true" />`
+
+
 ## Credits
 
 * handsontable: http://handsontable.com/
