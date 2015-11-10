@@ -22,7 +22,7 @@ Table data is editable within Perch. To add and remove rows or columns, right-cl
 
 #### columns
 
-Optional. The `columns` attribute takes a comma-separated list that defines the structure of the table. An optional type and format/options for each column can also be specified, separated by `|`. If used, column names are output in the `<thead>` section of the `<table>` element. If the `columns` attribute is not used, an empty 2x2 table is created and the user can add or remove columns as desired via right-click.
+Optional. The `columns` attribute takes a comma-separated list that defines the structure of the table. An optional type and format/options for each column can also be specified, separated by `|`. If used, column names are output in the `<thead>` section of the `<table>` element. If the `columns` attribute is not used, an empty 2*4 table is created and the user can add or remove columns as desired via right-click.
 
 Example:
 `<perch:content id="mytable" type="simona_table" label="Predefined Table" columns="Name,Age|numeric,Value|numeric|$0.00,Date of Birth|date|DD MMM YYYY,Active|checkbox|yes;no,Favourite colour|dropdown|blue;red;yellow;pink" />`
