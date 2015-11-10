@@ -113,7 +113,7 @@ class PerchFieldType_simona_table extends PerchAPI_FieldType
   public function get_processed($raw=false) {
 
     // PerchUtil::debug($this->Tag);
-    PerchUtil::debug($this->Tag->hide_headers());
+    // PerchUtil::debug($this->Tag->hide_headers());
 
     $data = json_decode($raw['data']);
     $headers = json_decode($raw['headers']);
