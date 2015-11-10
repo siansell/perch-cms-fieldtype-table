@@ -29,16 +29,16 @@ Example:
 
 Suported column types: `text` (the default), `numeric`, `date`, `checkbox`, `dropdown`.
 
-##### Numeric
+##### numeric
 Formats for the numeric column type follow the [numeral.js](http://numeraljs.com/) syntax. Default is `0`.
 
-##### Date
+##### date
 Formats for the date column type follow the [moment.js](http://momentjs.com/docs/#/parsing/string-format/) syntax. Default is `DD-MM-YYYY`.
 
-##### Checkbox
+##### checkbox
 Checkbox values can be specified as `checked_value;unchecked_value`. Default is `true;false`.
 
-##### Dropdown
+##### dropdown
 Dropdown options should be specified by a semi-colon delimited list, as in the example above.
 
 #### class
