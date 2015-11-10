@@ -10,7 +10,7 @@ Download and place the `simona_table` folder within `perch/addons/fieldtypes`.
 
 ## Usage
 
-Once installed, the fieldtype can be used in a template by setting the `type` attribute to `simona_piechart`:
+Once installed, the fieldtype can be used in a template by setting the `type` attribute to `simona_table`:
 
 `<perch:content id="mytable" type="simona_table" label="Editable Table" />`
 
