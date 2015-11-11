@@ -18,6 +18,8 @@ Example templates are supplied in the `templates` folder.
 
 Table data is editable within Perch. To add and remove rows or columns, right-click and use the context menu. Note: columns can only be added or removed if the `columns` attribute is not specified (see below).
 
+Column headers are editable within Perch.
+
 ### Attributes
 
 #### columns
