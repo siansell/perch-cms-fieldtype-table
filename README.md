@@ -2,7 +2,7 @@
 
 Table fieldtype for [Perch CMS](http://grabaperch.com). Works in standard templates and within blocks. Creates a configurable editable datatable within the Perch admin and outputs an HTML `<table>` element.
 
-**This README document is a work in progress.**
+**Be warned! This README document is a work in progress and the repository is subject to change until marked as v1.0.**
 
 ## Installation
 
