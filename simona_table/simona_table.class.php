@@ -65,8 +65,8 @@ class PerchFieldType_simona_table extends PerchAPI_FieldType
 
     $s = '';
     $s.= '<div class="simona_table_row">';
-    $s.= '<p><a href="#" id="simona_hot_'. $id. '_edit_headers" onclick="javascript:editColHeaders(\'simona_hot_'. $id. '\', this);">Edit column headers</a></p>';
-    $s.= '<p><a href="#" id="simona_hot_'. $id. '_save_headers" style="display:none;" onclick="javascript:saveColHeaders(\'simona_hot_'. $id. '\', this);">Save column headers</a></p>';
+    $s.= '<p><a href="#" id="simona_hot_'. $id. '_edit_headers" onclick="javascript:editColHeaders(\'simona_hot_'. $id. '\', this); return false;">Edit column headers</a></p>';
+    $s.= '<p><a href="#" id="simona_hot_'. $id. '_save_headers" style="display:none;" onclick="javascript:saveColHeaders(\'simona_hot_'. $id. '\', this); return false;">Save column headers</a></p>';
     $s.= '  <div class="simona_hot">';
     $s.= '    <div id="simona_hot_'. $id. '"></div>';
     $s.= '  </div>';
