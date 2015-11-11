@@ -63,7 +63,10 @@ class PerchFieldType_simona_table extends PerchAPI_FieldType
     $types = isset($details[$id]['types']) ? $this->Form->get($details[$id], 'types') : json_encode($column_types);
     $options = isset($details[$id]['options']) ? $this->Form->get($details[$id], 'options') : json_encode($column_options);
 
-    $s = '<div class="simona_table_row">';
+    $s = '';
+    $s.= '<div class="simona_table_row">';
+    $s.= '<p><a href="#" id="simona_hot_'. $id. '_edit_headers" onclick="javascript:editColHeaders(\'simona_hot_'. $id. '\', this);">Edit column headers</a></p>';
+    $s.= '<p><a href="#" id="simona_hot_'. $id. '_save_headers" style="display:none;" onclick="javascript:saveColHeaders(\'simona_hot_'. $id. '\', this);">Save column headers</a></p>';
     $s.= '  <div class="simona_hot">';
     $s.= '    <div id="simona_hot_'. $id. '"></div>';
     $s.= '  </div>';
@@ -79,6 +82,8 @@ class PerchFieldType_simona_table extends PerchAPI_FieldType
   public function get_raw($post=false, $Item=false) {
 
     $id = $this->Tag->id();
+    // PerchUtil::debug($this->Tag);
+
 
     if (isset($post[$id. '_data']) && trim($post[$id. '_data']) !== '') {
       $out['data'] = $post[$id. '_data'];
@@ -110,18 +115,20 @@ class PerchFieldType_simona_table extends PerchAPI_FieldType
 
   public function get_processed($raw=false) {
 
-    PerchUtil::debug($raw);
+    // PerchUtil::debug($this->Tag);
+    // PerchUtil::debug($this->Tag->hide_headers());
 
     $data = json_decode($raw['data']);
     $headers = json_decode($raw['headers']);
     $types = json_decode($raw['types']);
     $options = json_decode($raw['options']);
+    $hideheaders = ($this->Tag->hide_headers() === 'true') ? true : false;
 
     $out = '<table';
     if ($this->Tag->class()) $out.= ' class="'. $this->Tag->class(). '"';
     $out.= '>';
 
-    if ($headers) {
+    if ($headers && !$hideheaders) {
       $out.= '<thead>';
       foreach ($headers as $i => $th) {
         $out.= '<th>'. $th. '</th>';

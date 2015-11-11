@@ -1,6 +1,5 @@
 $(window).on('Perch_Init_Editors', initTables);
 
-
 function initTables() {
 
   $('div[id^="simona_hot_"]').each(function(index) {
@@ -115,6 +114,7 @@ function initTables() {
         afterGetColHeader: function (col, TH) {
           // console.log('afterGetColHeader');
           parent.setData(this);
+          parent.setHeaders(this);
         },
         afterCreateRow: function(index, amount) {
           parent.setData(this);
@@ -135,6 +135,88 @@ function initTables() {
 
     }
 
+  });
+
+}
+
+function getHotFromID(id) {
+  //find the table
+  var hot = $.grep(simona_table, function(e){
+    return e.id == id.replace('simona_hot_', '');
+  });
+  if (hot.length == 0) {return false;}
+
+  return hot[0];
+}
+
+function editColHeaders(id, e) {
+
+  hot = getHotFromID(id);
+  if (!hot.hasColHeaders() || hot == false) { return; }
+  $(e).hide();
+  var save_id = e.id.replace('edit', 'save');
+  // console.log(save_id);
+  $('#' + save_id).show();
+
+  $('input[type="submit"]#btnsubmit').prop('disabled', true);
+  $('input[type="submit"]#add_another').prop('disabled', true);
+
+  // console.log(hot);
+  current_headers = hot.getColHeader();
+
+  hot.updateSettings({
+    colHeaders: function (index) {
+      var textbox = '<input type="text" onchange="javascript:saveHeader(\'' + id + '\', ' + index + ', $(this).val());" value="' + current_headers[index] + '" />';
+      return textbox;
+    },
+    afterOnCellMouseDown : function(sender, e){
+      if (e.row === -1) {
+        this.getInstance().deselectCell();
+      }
+    },
+  });
+
+}
+
+function saveColHeaders(id, e) {
+
+  hot = getHotFromID(id);
+  if (!hot.hasColHeaders() || hot == false) { return; }
+  $(e).hide();
+  var edit_id = e.id.replace('save', 'edit');
+  // console.log(edit_id);
+  $('#' + edit_id).show();
+
+  new_headers = [];
+  x = hot.getColHeader();
+  for (i=0;i<x.length;i++) {
+    // console.log($(x[i]).attr('value'));
+    new_headers.push($(x[i]).attr('value'));
+  }
+
+  hot.updateSettings({
+    colHeaders: new_headers
+  });
+
+  $('input[type="submit"]#btnsubmit').prop('disabled', false);
+  $('input[type="submit"]#add_another').prop('disabled', false);
+
+}
+
+function saveHeader(id, col, value) {
+
+  // console.log(id);
+
+  hot = getHotFromID(id);
+  if (!hot.hasColHeaders() || hot == false) { return; }
+
+  new_headers = hot.getColHeader();
+  new_headers[col] = '<input type="text" onchange="javascript:saveHeader(\'' + id + '\', ' + col + ', $(this).val());" value="' + value + '" />';
+
+  // console.log(new_headers);
+
+  hot.updateSettings({
+    colHeaders: new_headers
   });
 
 }
