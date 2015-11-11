@@ -1,0 +1,8 @@
+.directory
+.DS_Store
+
+simona_table/handsontable-0.19.0/*
+!simona_table/handsontable-0.19.0/dist
+simona_table/handsontable-0.19.0/dist/*
+!simona_table/handsontable-0.19.0/dist/handsontable.full.min.css
+!simona_table/handsontable-0.19.0/dist/handsontable.full.min.js
