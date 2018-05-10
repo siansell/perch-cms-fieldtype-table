@@ -3,17 +3,17 @@ const allTablesOnPage = []
 const tablePrefix = 'simona_hot_'
 
 const setCulture = (id) => {
-  var culture = $(`#${id}_culture`).val()
+  const culture = $(`#${id}_culture`).val()
   numbro.culture(culture)
 }
 
 const initTables = () => {
-  $('div[id^=' + tablePrefix + ']').each(function () {
-    var unique_id = this.id.replace(tablePrefix, '')
+  $(`div[id^=${tablePrefix}]`).each(function () {
+    const unique_id = this.id.replace(tablePrefix, '')
 
     // Does the table already exist in the DOM?
     // TODO: this might not be necessary?
-    var result = $.grep(allTablesOnPage, function (e) {
+    const result = $.grep(allTablesOnPage, function (e) {
       return e.id === unique_id
     })
     // Table already exists. Do nothing.
@@ -125,6 +125,7 @@ const initTables = () => {
           row_below: {},
           remove_row: {},
         },
+        // TODO: conditionally add/remove columns. change default data in php file
       },
       manualColumnResize: true,
       manualRowResize: true,

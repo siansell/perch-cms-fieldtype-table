@@ -4,6 +4,7 @@ const rename = require('gulp-rename')
 const uglifyCss = require('gulp-uglifycss')
 const uglifyJs = require('gulp-uglify')
 const babel = require('gulp-babel')
+const gutil = require('gulp-util')
 
 const destinationDir = './simona_table'
 const sourceDir = './src'
@@ -29,6 +30,7 @@ gulp.task('css', () => {
       'maxLineLen': 80,
       'uglyComments': true,
     }))
+    .on('error', gutil.log)
     .pipe(rename({ suffix: '.min' }))
     .pipe(gulp.dest(`${destinationDir}/css`))
 })
@@ -40,7 +42,9 @@ gulp.task('js', () => {
     .pipe(babel({
       presets: ['babel-preset-env'].map(require.resolve),
     }))
+    .on('error', gutil.log)
     .pipe(uglifyJs())
+    .on('error', gutil.log)
     .pipe(rename({ suffix: '.min' }))
     .pipe(gulp.dest(`${destinationDir}/js`))
 })

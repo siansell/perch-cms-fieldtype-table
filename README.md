@@ -4,9 +4,12 @@
 - added get_search_text() and render_admin_listing() functions
 - tidied up simona_table_class.php code, added comments
 - new culture table level attribute
-- removed add/remove columns functionality. too much trouble. will welcome PRs
+
 ### TODO:
-- display in Perch admin.
+- .js file to es6
+- allow adding columns with right-click when columns attribute not supplied
+  - conditionally remove column items from context menu
+- better display in Perch admin. check mobile screen.
 - perch save/cancel buttons not disabled when in edit headers mode
   - https://stackoverflow.com/questions/18348437/how-do-i-edit-the-header-text-of-a-handsontable
 - test in perch 2
