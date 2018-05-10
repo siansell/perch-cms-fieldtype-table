@@ -6,7 +6,6 @@
 - new culture table level attribute
 - removed add/remove columns functionality. too much trouble. will welcome PRs
 ### TODO:
-- build: watch task
 - display in Perch admin.
 - perch save/cancel buttons not disabled when in edit headers mode
   - https://stackoverflow.com/questions/18348437/how-do-i-edit-the-header-text-of-a-handsontable
