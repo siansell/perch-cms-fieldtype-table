@@ -5,7 +5,6 @@ class PerchFieldType_simona_table extends PerchAPI_FieldType
     public $processed_output_is_markup = true;
 
     private $_location = '/addons/fieldtypes/simona_table';
-    private $_handsontable_location = "/handsontable/2.0.0/dist/";
 
     // Default data, used if no columns attribute supplied
     private $_default_column_headers = ['A', 'B', 'C', 'D'];
@@ -18,10 +17,10 @@ class PerchFieldType_simona_table extends PerchAPI_FieldType
     {
         $Perch = Perch::fetch();
 
-        // Handsontable
-        $Perch->add_css(PERCH_LOGINPATH . $this->_location . $this->_handsontable_location . 'handsontable.full.min.css');
-        $Perch->add_javascript(PERCH_LOGINPATH . $this->_location . $this->_handsontable_location . 'handsontable.full.min.js');
-        $Perch->add_javascript(PERCH_LOGINPATH . $this->_location . $this->_handsontable_location . 'numbro/languages.js');
+        // Handsontable + dependencies
+        $Perch->add_css(PERCH_LOGINPATH . $this->_location . '/css/handsontable.full.min.css');
+        $Perch->add_javascript(PERCH_LOGINPATH . $this->_location . '/js/handsontable.full.min.js');
+        $Perch->add_javascript(PERCH_LOGINPATH . $this->_location . '/js/languages.min.js');
 
         // simona_table
         $Perch->add_javascript(PERCH_LOGINPATH . $this->_location . '/js/simona_table_admin.js');

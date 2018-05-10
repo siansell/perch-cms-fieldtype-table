@@ -8,9 +8,14 @@
 ### TODO:
 - display in Perch admin.
 - perch save/cancel buttons not disabled when in edit headers mode
+  - https://stackoverflow.com/questions/18348437/how-do-i-edit-the-header-text-of-a-handsontable
 - test in perch 2
 - update readme (this file)
-- run js file through prettier before commit
+
+- build
+  - /src dir
+  - get handsontable from npm
+  - run js file through prettier before commit
 
 # perch-cms-fieldtype-table
 

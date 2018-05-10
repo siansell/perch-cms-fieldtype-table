@@ -1,0 +1,53 @@
+{
+  "env": {
+    "browser": true,
+    "jquery": true,
+    "es6": true,
+    "node": true
+  },
+  "extends": "eslint:recommended",
+  "globals": {
+    "Handsontable": true,
+    "numbro": true
+  },
+  "rules": {
+    "comma-dangle": [
+      "error",
+      "always"
+    ],
+    "eqeqeq": [
+      "error"
+    ],
+    "indent": [
+      "error",
+      2,
+      {
+        "SwitchCase": 1
+      }
+    ],
+    "linebreak-style": [
+      "error",
+      "unix"
+    ],
+    "max-len": [
+      "error",
+      120
+    ],
+    "no-case-declarations": "error",
+    "no-console": "warn",
+    "quotes": [
+      "error",
+      "single"
+    ],
+    "semi": [
+      "error",
+      "never"
+    ],
+    "space-infix-ops": [
+      "error",
+      {
+        "int32Hint": false
+      }
+    ]
+  }
+}
