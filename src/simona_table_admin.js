@@ -8,114 +8,136 @@ const setCulture = (id) => {
 }
 
 const initTables = () => {
+  // Don't use an arrow function as the callback, we need `this`
   $(`div[id^=${tablePrefix}]`).each(function () {
-    const unique_id = this.id.replace(tablePrefix, '')
+    // Unique table id
+    const uid = this.id.replace(tablePrefix, '')
 
     // Does the table already exist in the DOM?
     // TODO: this might not be necessary?
-    const result = $.grep(allTablesOnPage, function (e) {
-      return e.id === unique_id
-    })
+    const result = $.grep(allTablesOnPage, e => e.id === uid)
     // Table already exists. Do nothing.
     if (result.length) return
 
     // Hidden DOM elements holding the table data in a value attribute
-    var dataEl = $('#' + unique_id + '_data')
-    var headersEl = $('#' + unique_id + '_headers')
-    var typesEl = $('#' + unique_id + '_types')
-    var optionsEl = $('#' + unique_id + '_options')
-    setCulture(unique_id)
-
-    // Init the table
+    const dataEl = $(`#${uid}_data`)
+    const headersEl = $(`#${uid}_headers`)
+    const typesEl = $(`#${uid}_types`)
+    const optionsEl = $(`#${uid}_options`)
+    setCulture(uid)
 
     // data is an array with one item for each row in the table
     // Each item is an array with one item for each column
-    var data = JSON.parse(dataEl.val())
+    const data = JSON.parse(dataEl.val())
 
     // headers is an array with one item for each column
-    var headers = JSON.parse(headersEl.val())
+    const headers = JSON.parse(headersEl.val())
 
     // types is an array with one item for each column
-    var types = JSON.parse(typesEl.val())
+    const types = JSON.parse(typesEl.val())
 
-    // Init an array of column objects and set the type. Some keys only apply to certain types.
-    // { type, dateFormat, correctFormat, checkedTemplate, uncheckedTemplate, source }
-    var columns = []
-    for (var i = 0; i < types.length; i++) {
-      var c = {}
-      c.type = types[i]
-      columns.push(c)
-    }
     // options is an array with one item for each column
-    var options = JSON.parse(optionsEl.val())
+    const options = JSON.parse(optionsEl.val())
 
-    // Add properties to the columns depending on column type
-    for (i = 0; i < columns.length; i++) {
-      var optionsParts = options[i].split(';')
+    // Populate an array of column objects. Some keys only apply to certain types.
+    // { type, dateFormat, correctFormat, checkedTemplate, uncheckedTemplate, source }
+    const columns = types
+      .map((type, i) => {
+        const col = {
+          type,
+        }
 
-      switch (columns[i].type) {
-        case 'numeric':
+        const colOptions = options[i]
+        const optionsParts = colOptions.split(';')
+
+        // Add properties to the columns depending on column type
+        switch (type) {
+          case 'numeric':
           // Valid patterns: http://numbrojs.com/format.html#numbers
-          if (options[i]) {
-            columns[i].numericFormat = {
-              pattern: options[i],
+            if (colOptions) {
+              col.numericFormat = {
+                pattern: colOptions,
+              }
             }
-          }
-          break
+            break
 
-        case 'date':
+          case 'date':
           // Valid date formats: http://momentjs.com/docs/#/parsing/string-format/
-          if (options[i]) {
-            columns[i].dateFormat = options[i]
-            columns[i].correctFormat = true
-          }
-          break
+            if (options[i]) {
+              col.dateFormat = colOptions
+              col.correctFormat = true
+            }
+            break
 
-        case 'checkbox':
-          columns[i].checkedTemplate = optionsParts[0]
-          columns[i].uncheckedTemplate = optionsParts[1]
-          break
+          case 'checkbox':
+            col.checkedTemplate = optionsParts[0]
+            col.uncheckedTemplate = optionsParts[1]
+            break
 
-        case 'dropdown':
+          case 'dropdown':
           // Semi-colon delimited list of options
-          columns[i].source = optionsParts
-          break
-      }
-    }
+            col.source = optionsParts
+            break
+        }
 
-    // Write Handsontable data to the hidden DOM element
-    this.setData = function (hot) {
-      setCulture(unique_id)
-      var hotData = hot.getData()
-      for (var i = 0; i < hotData.length; i++) {
-        for (var j = 0; j < hotData[i].length; j++) {
+        return col
+      })
+
+    // Write formatted Handsontable data to the hidden DOM element
+    this.setData = (hot) => {
+      setCulture(uid)
+
+      const hotData = hot
+        .getData()
+
+      const formattedData = hotData.map((row, i) => {
+        return row.map((col, j) => {
           switch (types[j]) {
             case 'numeric':
-              if (hotData[i][j]) {
-                hotData[i][j] = numbro(hotData[i][j]).format(options[j])
-              }
-              break
+              return hotData[i][j] ? numbro(hotData[i][j]).format(options[j]) : null
+            default:
+              return col
           }
-        }
-      }
-      var out = JSON.stringify(hotData)
-      $(dataEl).val(out)
+        })
+      })
+
+      $(dataEl).val(JSON.stringify(formattedData))
     }
 
     // Set the Handsontable headers
-    this.setHeaders = function (hot) {
-      var out = hot.getColHeader()
-      for (i = 0; i < out.length; i++) {
-        if (!out[i]) out[i] = ''
-      }
-      out = JSON.stringify(out)
-      $(headersEl).val(out)
+    this.setHeaders = (hot) => {
+      $(headersEl).val(
+        JSON.stringify(
+          hot
+            .getColHeader()
+            .map(header => header || '')
+        )
+      )
     }
 
     // Init the table: https://docs.handsontable.com/pro/2.0.0/tutorial-quick-start.html
     var parent = this
     var container = document.getElementById(this.id)
     var hot = new Handsontable(container, {
+      afterChange: function () {
+        parent.setData(this)
+      },
+      afterCreateCol: function () {
+        parent.setData(this)
+      },
+      afterCreateRow: function () {
+        parent.setData(this)
+      },
+      afterGetColHeader: function () {
+        parent.setData(this)
+        parent.setHeaders(this)
+      },
+      afterRemoveCol: function () {
+        parent.setData(this)
+      },
+      afterRemoveRow: function () {
+        parent.setData(this)
+      },
       data: data,
       colHeaders: headers,
       columns: columns,
@@ -130,120 +152,78 @@ const initTables = () => {
       manualColumnResize: true,
       manualRowResize: true,
       rowHeaders: false,
-      afterChange: function () {
-        parent.setData(this)
-      },
-      afterGetColHeader: function () {
-        parent.setData(this)
-        parent.setHeaders(this)
-      },
-      afterCreateRow: function () {
-        parent.setData(this)
-      },
-      afterRemoveRow: function () {
-        parent.setData(this)
-      },
-      afterCreateCol: function () {
-        parent.setData(this)
-      },
-      afterRemoveCol: function () {
-        parent.setData(this)
-      },
     })
     this.setHeaders(hot)
-    hot.id = unique_id
+    hot.id = uid
     allTablesOnPage.push(hot)
   })
 }
 
-// Find a table
-function getHotFromID(id) {
-  var hot = $.grep(allTablesOnPage, function (e) {
-    return e.id === id.replace(tablePrefix, '')
-  })
-  if (hot.length === 0) return false
+// Find a table by id
+const getHotFromID = (id) => {
+  const hot = $.grep(allTablesOnPage, e => e.id === id.replace(tablePrefix, ''))
+  if (!hot.length) return false
   return hot[0]
 }
 
-function editColHeaders(id, e) { // eslint-disable-line
-  var hot = getHotFromID(id)
+// `Save changes` / `Cancel` Perch edit buttons. Pass true to disable,false to enable
+const disablePerchEditButtons = (value) => {
+  $('input[type="submit"]#btnsubmit').prop('disabled', value)
+  $('input[type="submit"]#add_another').prop('disabled', value)
+}
+
+const editColHeaders = (id, e) => { // eslint-disable-line
+  const hot = getHotFromID(id)
   if (!hot.hasColHeaders() || hot === false) return
 
+  // Save/edit links
   $(e).hide()
-  var save_id = e.id.replace('edit', 'save')
-  $('#' + save_id).show()
+  $(`#${e.id.replace('edit', 'save')}`).show()
 
-  $('input[type="submit"]#btnsubmit').prop('disabled', true)
-  $('input[type="submit"]#add_another').prop('disabled', true)
-
-  var current_headers = hot.getColHeader()
+  disablePerchEditButtons(true)
 
   hot.updateSettings({
-    colHeaders: function (index) {
-      var textbox =
-        '<input type="text" onchange="javascript:saveHeader(\'' +
-        id +
-        "', " + // eslint-disable-line
-        index +
-        ', $(this).val());" value="' +
-        current_headers[index] +
-        '" />'
-      return textbox
-    },
-    afterOnCellMouseDown: function (sender, e) {
-      if (e.row === -1) {
-        this.getInstance().deselectCell()
-      }
+    // Replace column headers with editable inputs
+    colHeaders: hot
+      .getColHeader()
+      .map((h, i) =>
+        `<input type="text" onchange="javascript:saveHeader('${id}',${i},$(this).val());" value="${h}" />`),
+    afterOnCellMouseDown: function (sender, e) { // no arrow function here, we need `this`
+      // Disable default header click behaviour, which is to select the entire cell
+      if (e.row === -1) this.getInstance().deselectCell()
     },
   })
 }
 
-function saveColHeaders(id, e) { // eslint-disable-line
-  var hot = getHotFromID(id)
-  if (!hot.hasColHeaders() || hot === false) {
-    return
-  }
+const saveColHeaders = (id, e) => { // eslint-disable-line
+  const hot = getHotFromID(id)
+  if (!hot.hasColHeaders() || hot === false) return
+
+  // Save/edit links
   $(e).hide()
-  var edit_id = e.id.replace('save', 'edit')
-  $('#' + edit_id).show()
-
-  var new_headers = []
-  var x = hot.getColHeader()
-  for (var i = 0; i < x.length; i++) {
-    new_headers.push($(x[i]).attr('value'))
-  }
+  $(`#${e.id.replace('save', 'edit')}`).show()
 
   hot.updateSettings({
-    colHeaders: new_headers,
+    colHeaders: hot
+      .getColHeader()
+      .map(header => $(header).attr('value')),
   })
 
-  $('input[type="submit"]#btnsubmit').prop('disabled', false)
-  $('input[type="submit"]#add_another').prop('disabled', false)
+  disablePerchEditButtons(false)
 }
 
-function saveHeader(id, col, value) { // eslint-disable-line
-  var hot = getHotFromID(id)
-  if (!hot.hasColHeaders() || hot === false) {
-    return
-  }
-
-  var new_headers = hot.getColHeader()
-  new_headers[col] =
-    '<input type="text" onchange="javascript:saveHeader(\'' +
-    id +
-    "', " + // eslint-disable-line
-    col +
-    ', $(this).val());" value="' +
-    value +
-    '" />'
+const saveHeader = (id, col, value) => { // eslint-disable-line
+  const hot = getHotFromID(id)
+  if (!hot.hasColHeaders() || hot === false) return
 
   hot.updateSettings({
-    colHeaders: new_headers,
+    colHeaders: hot
+      .getColHeader()
+      .map((h, i) => i === col ? h.replace(/value=".*"/, `value="${value}"`) : h),
   })
 }
 
+// Let's go!
 // Perch_Init_Editors is called when a new block or repeater item is added in Perch
 $(window).on('Perch_Init_Editors', initTables)
-
-// Let's go
 initTables()
