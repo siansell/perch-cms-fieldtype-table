@@ -1,4 +1,6 @@
 node_modules/
 
+yarn-error.log
+
 .directory
 .DS_Store

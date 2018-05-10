@@ -1,25 +1,19 @@
 // Constants
-var allTablesOnPage = []
-var tablePrefix = 'simona_hot_'
+const allTablesOnPage = []
+const tablePrefix = 'simona_hot_'
 
-// Perch_Init_Editors is called when a new block or repeater item is added in Perch
-$(window).on('Perch_Init_Editors', initTables)
-
-// Let's go
-initTables()
-
-function setCulture(id) {
-  var culture = $('#' + id + '_culture').val()
+const setCulture = (id) => {
+  var culture = $(`#${id}_culture`).val()
   numbro.culture(culture)
 }
 
-function initTables() {
-  $('div[id^=' + tablePrefix + ']').each(function() {
+const initTables = () => {
+  $('div[id^=' + tablePrefix + ']').each(function () {
     var unique_id = this.id.replace(tablePrefix, '')
 
     // Does the table already exist in the DOM?
     // TODO: this might not be necessary?
-    var result = $.grep(allTablesOnPage, function(e) {
+    var result = $.grep(allTablesOnPage, function (e) {
       return e.id === unique_id
     })
     // Table already exists. Do nothing.
@@ -90,7 +84,7 @@ function initTables() {
     }
 
     // Write Handsontable data to the hidden DOM element
-    this.setData = function(hot) {
+    this.setData = function (hot) {
       setCulture(unique_id)
       var hotData = hot.getData()
       for (var i = 0; i < hotData.length; i++) {
@@ -109,7 +103,7 @@ function initTables() {
     }
 
     // Set the Handsontable headers
-    this.setHeaders = function(hot) {
+    this.setHeaders = function (hot) {
       var out = hot.getColHeader()
       for (i = 0; i < out.length; i++) {
         if (!out[i]) out[i] = ''
@@ -135,23 +129,23 @@ function initTables() {
       manualColumnResize: true,
       manualRowResize: true,
       rowHeaders: false,
-      afterChange: function() {
+      afterChange: function () {
         parent.setData(this)
       },
-      afterGetColHeader: function() {
+      afterGetColHeader: function () {
         parent.setData(this)
         parent.setHeaders(this)
       },
-      afterCreateRow: function() {
+      afterCreateRow: function () {
         parent.setData(this)
       },
-      afterRemoveRow: function() {
+      afterRemoveRow: function () {
         parent.setData(this)
       },
-      afterCreateCol: function() {
+      afterCreateCol: function () {
         parent.setData(this)
       },
-      afterRemoveCol: function() {
+      afterRemoveCol: function () {
         parent.setData(this)
       },
     })
@@ -163,7 +157,7 @@ function initTables() {
 
 // Find a table
 function getHotFromID(id) {
-  var hot = $.grep(allTablesOnPage, function(e) {
+  var hot = $.grep(allTablesOnPage, function (e) {
     return e.id === id.replace(tablePrefix, '')
   })
   if (hot.length === 0) return false
@@ -184,7 +178,7 @@ function editColHeaders(id, e) { // eslint-disable-line
   var current_headers = hot.getColHeader()
 
   hot.updateSettings({
-    colHeaders: function(index) {
+    colHeaders: function (index) {
       var textbox =
         '<input type="text" onchange="javascript:saveHeader(\'' +
         id +
@@ -195,7 +189,7 @@ function editColHeaders(id, e) { // eslint-disable-line
         '" />'
       return textbox
     },
-    afterOnCellMouseDown: function(sender, e) {
+    afterOnCellMouseDown: function (sender, e) {
       if (e.row === -1) {
         this.getInstance().deselectCell()
       }
@@ -246,3 +240,9 @@ function saveHeader(id, col, value) { // eslint-disable-line
     colHeaders: new_headers,
   })
 }
+
+// Perch_Init_Editors is called when a new block or repeater item is added in Perch
+$(window).on('Perch_Init_Editors', initTables)
+
+// Let's go
+initTables()

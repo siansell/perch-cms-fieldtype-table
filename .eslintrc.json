@@ -13,7 +13,7 @@
   "rules": {
     "comma-dangle": [
       "error",
-      "always"
+      "always-multiline"
     ],
     "eqeqeq": [
       "error"
@@ -35,6 +35,11 @@
     ],
     "no-case-declarations": "error",
     "no-console": "warn",
+    "no-use-before-define": "error",
+    "object-curly-spacing": [
+      "error",
+      "always"
+    ],
     "quotes": [
       "error",
       "single"

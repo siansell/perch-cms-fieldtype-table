@@ -23,8 +23,8 @@ class PerchFieldType_simona_table extends PerchAPI_FieldType
         $Perch->add_javascript(PERCH_LOGINPATH . $this->_location . '/js/languages.min.js');
 
         // simona_table
-        $Perch->add_javascript(PERCH_LOGINPATH . $this->_location . '/js/simona_table_admin.js');
-        $Perch->add_css(PERCH_LOGINPATH . $this->_location . '/css/simona_table_admin.css');
+        $Perch->add_javascript(PERCH_LOGINPATH . $this->_location . '/js/simona_table_admin.min.js');
+        $Perch->add_css(PERCH_LOGINPATH . $this->_location . '/css/simona_table_admin.min.css');
     }
 
     // https://docs.grabaperch.com/api/reference/fieldtype/render-inputs/
