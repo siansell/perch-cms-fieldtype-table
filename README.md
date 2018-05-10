@@ -1,3 +1,17 @@
+## Update to use Handsontable 2.0.0
+### DONE:
+- eslint simona_table_admin.js
+- added get_search_text() and render_admin_listing() functions
+- tidied up simona_table_class.php code, added comments
+- new culture table level attribute
+- removed add/remove columns functionality. too much trouble. will welcome PRs
+### TODO:
+- display in Perch admin.
+- perch save/cancel buttons not disabled when in edit headers mode
+- test in perch 2
+- update readme (this file)
+- run js file through prettier before commit
+
 # perch-cms-fieldtype-table
 
 Table fieldtype for [Perch CMS](http://grabaperch.com). Works in standard templates and within blocks. Creates a configurable editable datatable within the Perch admin and outputs an HTML `<table>` element.
@@ -31,27 +45,28 @@ Example:
 
 Suported column types: `text` (the default), `numeric`, `date`, `checkbox`, `dropdown`.
 
-##### numeric
-Formats for the numeric column type follow the [numeral.js](http://numeraljs.com/) syntax. Default is `0`.
+###### numeric
+Patterns for the numeric column type should follow the [numbrojs pattern syntax](http://numbrojs.com/format.html#numbers).
 
-##### date
+###### date
 Formats for the date column type follow the [moment.js](http://momentjs.com/docs/#/parsing/string-format/) syntax. Default is `DD-MM-YYYY`.
 
-##### checkbox
+###### checkbox
 Checkbox values can be specified as `checked_value;unchecked_value`. Default is `true;false`.
 
-##### dropdown
+###### dropdown
 Dropdown options should be specified by a semi-colon delimited list, as in the example above.
 
 #### class
-
 Optional. If specified, the `class` attribute is applied to the output `<table>` element.
 `<perch:content id="mytable" type="simona_table" label="Editable Table" class="table table-striped" />`
 
 #### hide-headers
-
 Optional: Set to true to hide the `<thead>` section in the output.
 `<perch:content id="mytable" type="simona_table" label="Editable Table" hide-headers="true" />`
+
+### culture
+Optional: Set the culture for numeric column types. See the [Handsontable docs](https://docs.handsontable.com/2.0.0/Options.html#numericFormat).
 
 ## Future Development
 

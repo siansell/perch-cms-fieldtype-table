@@ -1,6 +1,8 @@
 .simona_table, .simona_hot {
-  margin: 10px 0 0 230px !important;
+  /* margin: 10px 0 0 230px !important; */
+  margin-top: 0.2em;
 }
+
 .simona_table_row {
-  margin-top: 10px;
+  /* margin-top: 10px; */
 }
