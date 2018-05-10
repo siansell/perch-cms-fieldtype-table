@@ -23,7 +23,7 @@ gulp.task('handsontable', () => {
 
 gulp.task('css', () => {
   gulp.src([
-    `${sourceDir}/simona_table_admin.css`,
+    `${sourceDir}/**/*.css`,
   ])
     .pipe(uglifyCss({
       'maxLineLen': 80,
@@ -35,7 +35,7 @@ gulp.task('css', () => {
 
 gulp.task('js', () => {
   gulp.src([
-    `${sourceDir}/simona_table_admin.js`,
+    `${sourceDir}/**/*.js`,
   ])
     .pipe(babel({
       presets: ['babel-preset-env'].map(require.resolve),
@@ -44,6 +44,19 @@ gulp.task('js', () => {
     .pipe(rename({ suffix: '.min' }))
     .pipe(gulp.dest(`${destinationDir}/js`))
 })
+
+gulp.task('watchCss', () => {
+  gulp.watch(`${sourceDir}/**/*.css`, ['css'])
+})
+
+gulp.task('watchJs', () => {
+  gulp.watch(`${sourceDir}/**/*.js`, ['js'])
+})
+
+gulp.task('watch', [
+  'watchCss',
+  'watchJs',
+])
 
 gulp.task('build', [
   'handsontable',
