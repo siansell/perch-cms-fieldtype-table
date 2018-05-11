@@ -7,6 +7,8 @@
 
 ### TODO:
 - better display in Perch admin. check mobile screen.
+  - mobile screen. tr needs display: table-row, td needs display: table-cell
+- left click context menu add row jumps to top of page
 - perch save/cancel buttons not disabled when in edit headers mode
   - https://stackoverflow.com/questions/18348437/how-do-i-edit-the-header-text-of-a-handsontable
 - test in perch 2

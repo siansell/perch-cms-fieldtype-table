@@ -1,1 +1,3 @@
-.simona_table,.simona_hot{margin-top:.2em}
+.simona_table,.simona_hot{margin-top:.2em}@media(max-width:767px){.simona_hot table thead{display:block}
+.simona_hot table tr{border-bottom:3px solid #ccc;display:table-row}.simona_hot table td{border-bottom:1px solid #ccc;display:table-cell;text-align:auto}
+.simona_hot table td:before{content:''}}

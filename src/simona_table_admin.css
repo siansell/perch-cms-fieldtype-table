@@ -6,3 +6,22 @@
 .simona_table_row {
   /* margin-top: 10px; */
 }
+
+/* override perch table responsive styles */
+@media (max-width: 767px) {
+  .simona_hot table thead {
+    display: block;
+  }
+  .simona_hot table tr {
+    border-bottom: 3px solid #cccccc;
+    display: table-row;
+  }
+  .simona_hot table td {
+    border-bottom: 1px solid #cccccc;
+    display: table-cell;
+    text-align: auto;
+  }
+  .simona_hot table td:before {
+    content: '';
+  }
+}
