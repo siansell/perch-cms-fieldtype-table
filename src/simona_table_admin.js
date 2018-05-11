@@ -39,6 +39,9 @@ const initTables = () => {
       const columnCount = data[0].length
       $typesEl.attr('value', `[${'"text",'.repeat(columnCount).slice(0, -1)}]`)
       $optionsEl.attr('value', `[${'"",'.repeat(columnCount).slice(0, -1)}]`)
+    }
+    // check the headers haven't been edited before filling with blanks
+    if ($headersEl.val() === '"[]"') {
       headers = true
     } else {
       headers = JSON.parse($headersEl.val())
