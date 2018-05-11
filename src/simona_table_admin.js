@@ -20,68 +20,81 @@ const initTables = () => {
     if (result.length) return
 
     // Hidden DOM elements holding the table data in a value attribute
-    const dataEl = $(`#${uid}_data`)
-    const headersEl = $(`#${uid}_headers`)
-    const typesEl = $(`#${uid}_types`)
-    const optionsEl = $(`#${uid}_options`)
+    const $fixedColsEl = $(`#${uid}_fixedCols`)
+    const $dataEl = $(`#${uid}_data`)
+    const $headersEl = $(`#${uid}_headers`)
+    const $typesEl = $(`#${uid}_types`)
+    const $optionsEl = $(`#${uid}_options`)
     setCulture(uid)
 
     // data is an array with one item for each row in the table
     // Each item is an array with one item for each column
-    const data = JSON.parse(dataEl.val())
+    const data = JSON.parse($dataEl.val())
 
-    // headers is an array with one item for each column
-    const headers = JSON.parse(headersEl.val())
+    // Let's parse some data
+    const tableHasFixedColumns = ($fixedColsEl.val() === 'true') // i.e. columns attribute not
+    // present on Perch template tag
+    let headers
+    if (!tableHasFixedColumns) {
+      const columnCount = data[0].length
+      $typesEl.attr('value', `[${'"text",'.repeat(columnCount).slice(0, -1)}]`)
+      $optionsEl.attr('value', `[${'"",'.repeat(columnCount).slice(0, -1)}]`)
+      headers = true
+    } else {
+      headers = JSON.parse($headersEl.val())
+    }
+    const types = JSON.parse($typesEl.val())
+    const options = JSON.parse($optionsEl.val())
 
-    // types is an array with one item for each column
-    const types = JSON.parse(typesEl.val())
+    let columns
+    if (tableHasFixedColumns) {
+      // Populate an array of column objects. Some keys only apply to certain types.
+      // { type, dateFormat, correctFormat, checkedTemplate, uncheckedTemplate, source }
+      columns = types
+        .map((type, i) => {
+          const col = {
+            type,
+          }
 
-    // options is an array with one item for each column
-    const options = JSON.parse(optionsEl.val())
+          const colOptions = options[i]
+          const optionsParts = colOptions.split(';')
 
-    // Populate an array of column objects. Some keys only apply to certain types.
-    // { type, dateFormat, correctFormat, checkedTemplate, uncheckedTemplate, source }
-    const columns = types
-      .map((type, i) => {
-        const col = {
-          type,
-        }
-
-        const colOptions = options[i]
-        const optionsParts = colOptions.split(';')
-
-        // Add properties to the columns depending on column type
-        switch (type) {
-          case 'numeric':
-          // Valid patterns: http://numbrojs.com/format.html#numbers
-            if (colOptions) {
-              col.numericFormat = {
-                pattern: colOptions,
+          // Add properties to the columns depending on column type
+          switch (type) {
+            case 'numeric':
+              // Valid patterns: http://numbrojs.com/format.html#numbers
+              if (colOptions) {
+                col.numericFormat = {
+                  pattern: colOptions,
+                }
               }
-            }
-            break
+              break
 
-          case 'date':
-          // Valid date formats: http://momentjs.com/docs/#/parsing/string-format/
-            if (options[i]) {
-              col.dateFormat = colOptions
-              col.correctFormat = true
-            }
-            break
+            case 'date':
+              // Valid date formats: http://momentjs.com/docs/#/parsing/string-format/
+              if (options[i]) {
+                col.dateFormat = colOptions
+                col.correctFormat = true
+              }
+              break
 
-          case 'checkbox':
-            col.checkedTemplate = optionsParts[0]
-            col.uncheckedTemplate = optionsParts[1]
-            break
+            case 'checkbox':
+              col.checkedTemplate = optionsParts[0]
+              col.uncheckedTemplate = optionsParts[1]
+              break
 
-          case 'dropdown':
-          // Semi-colon delimited list of options
-            col.source = optionsParts
-            break
-        }
+            case 'dropdown':
+              // Semi-colon delimited list of options
+              col.source = optionsParts
+              break
+          }
 
-        return col
-      })
+          return col
+        })
+    } else {
+      // Needs setting. Columns can be added via HoT context menu
+      columns = false
+    }
 
     // Write formatted Handsontable data to the hidden DOM element
     this.setData = (hot) => {
@@ -101,12 +114,12 @@ const initTables = () => {
         })
       })
 
-      $(dataEl).val(JSON.stringify(formattedData))
+      $($dataEl).val(JSON.stringify(formattedData))
     }
 
     // Set the Handsontable headers
     this.setHeaders = (hot) => {
-      $(headersEl).val(
+      $($headersEl).val(
         JSON.stringify(
           hot
             .getColHeader()
@@ -118,6 +131,21 @@ const initTables = () => {
     // Init the table: https://docs.handsontable.com/pro/2.0.0/tutorial-quick-start.html
     var parent = this
     var container = document.getElementById(this.id)
+
+    const contextMenu = {
+      items: {
+        row_above: {},
+        row_below: {},
+        remove_row: {},
+      },
+    }
+    if (!tableHasFixedColumns) {
+      contextMenu.items.hsep1 =  '---------',
+      contextMenu.items.col_left =  {}
+      contextMenu.items.col_right = {}
+      contextMenu.items.remove_col = {}
+    }
+
     var hot = new Handsontable(container, {
       afterChange: function () {
         parent.setData(this)
@@ -141,14 +169,7 @@ const initTables = () => {
       data: data,
       colHeaders: headers,
       columns: columns,
-      contextMenu: {
-        items: {
-          row_above: {},
-          row_below: {},
-          remove_row: {},
-        },
-        // TODO: conditionally add/remove columns. change default data in php file
-      },
+      contextMenu,
       manualColumnResize: true,
       manualRowResize: true,
       rowHeaders: false,

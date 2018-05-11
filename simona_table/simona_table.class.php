@@ -6,11 +6,6 @@ class PerchFieldType_simona_table extends PerchAPI_FieldType
 
     private $_location = '/addons/fieldtypes/simona_table';
 
-    // Default data, used if no columns attribute supplied
-    private $_default_column_headers = ['A', 'B', 'C', 'D'];
-    private $_default_column_types = ['text', 'text', 'text', 'text'];
-    private $_default_column_options = ['', '', '', ''];
-
     // https://docs.grabaperch.com/api/reference/fieldtype/add-page-resources/
     // Adds Handsontable JS and CSS to the Perch admin
     public function add_page_resources()
@@ -60,15 +55,18 @@ class PerchFieldType_simona_table extends PerchAPI_FieldType
             }, $column_parts);
         } else {
             // No predefined columns
-            $column_headers = $this->_default_column_headers;
-            $column_types = $this->_default_column_types;
-            $column_options = $this->_default_column_options;
+            $column_headers = '[]';
+            $column_types = '[]';
+            $column_options = '[]';
         }
 
         // Populate default data. 2 rows
         $default_data = [];
+        // 4 columns for non-fixed column tables
+        $has_fixed_cols = !($column_headers === '[]');
+        $col_count = $has_fixed_cols ? PerchUtil::count($column_headers) : 4;
         for ($i = 0; $i < 2; $i++) {
-            $a = array_fill(0, PerchUtil::count($column_headers), null);
+            $a = array_fill(0, $col_count, null);
             array_push($default_data, $a);
         }
 
@@ -100,6 +98,7 @@ class PerchFieldType_simona_table extends PerchAPI_FieldType
         $s .= '        <div id="simona_hot_' . $id . '"></div>';
         $s .= '    </div>';
         $s .= '</div>';
+        $s .= $this->Form->hidden($id . '_fixedCols', json_encode($has_fixed_cols));
         $s .= $this->Form->hidden($id . '_data', $data);
         $s .= $this->Form->hidden($id . '_headers', $headers);
         $s .= $this->Form->hidden($id . '_types', $types);

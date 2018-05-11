@@ -43,8 +43,8 @@ gulp.task('js', () => {
       presets: ['babel-preset-env'].map(require.resolve),
     }))
     .on('error', gutil.log)
-    .pipe(uglifyJs())
-    .on('error', gutil.log)
+    // .pipe(uglifyJs())
+    // .on('error', gutil.log)
     .pipe(rename({ suffix: '.min' }))
     .pipe(gulp.dest(`${destinationDir}/js`))
 })

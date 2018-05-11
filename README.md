@@ -6,9 +6,8 @@
 - new culture table level attribute
 
 ### TODO:
-- .js file to es6
 - allow adding columns with right-click when columns attribute not supplied
-  - conditionally remove column items from context menu
+  - after save in perch, hidden elements are now populated and tableHasFixedColumns is not set correctly
 - better display in Perch admin. check mobile screen.
 - perch save/cancel buttons not disabled when in edit headers mode
   - https://stackoverflow.com/questions/18348437/how-do-i-edit-the-header-text-of-a-handsontable
