@@ -1,3 +1,3 @@
-.simona_table,.simona_hot{margin-top:.2em}@media(max-width:767px){.simona_hot table thead{display:block}
-.simona_hot table tr{border-bottom:3px solid #ccc;display:table-row}.simona_hot table td{border-bottom:1px solid #ccc;display:table-cell;text-align:auto}
-.simona_hot table td:before{content:''}}
+.simona_table,.simona_hot{margin:.2em 0 0 230px !important}@media(max-width:767px){.simona_hot table thead{display:block}
+.simona_hot table tr{display:table-row}.simona_hot table td{display:table-cell}.simona_hot table td:before{content:''}
+}

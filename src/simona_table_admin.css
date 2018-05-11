@@ -1,6 +1,6 @@
 .simona_table, .simona_hot {
-  /* margin: 10px 0 0 230px !important; */
-  margin-top: 0.2em;
+  margin: 0.2em 0 0 230px !important;
+  /* margin-top: 0.2em; */
 }
 
 .simona_table_row {
@@ -13,13 +13,10 @@
     display: block;
   }
   .simona_hot table tr {
-    border-bottom: 3px solid #cccccc;
     display: table-row;
   }
   .simona_hot table td {
-    border-bottom: 1px solid #cccccc;
     display: table-cell;
-    text-align: auto;
   }
   .simona_hot table td:before {
     content: '';

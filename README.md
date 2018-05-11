@@ -1,19 +1,3 @@
-## Update to use Handsontable 2.0.0
-### DONE:
-- eslint simona_table_admin.js
-- added get_search_text() and render_admin_listing() functions
-- tidied up simona_table_class.php code, added comments
-- new culture table level attribute
-
-### TODO:
-- better display in Perch admin. check mobile screen.
-  - mobile screen. tr needs display: table-row, td needs display: table-cell
-- left click context menu add row jumps to top of page
-- perch save/cancel buttons not disabled when in edit headers mode
-  - https://stackoverflow.com/questions/18348437/how-do-i-edit-the-header-text-of-a-handsontable
-- test in perch 2
-- update readme (this file)
-
 # perch-cms-fieldtype-table
 
 Table fieldtype for [Perch CMS](http://grabaperch.com). Works in standard templates and within blocks. Creates a configurable editable datatable within the Perch admin and outputs an HTML `<table>` element.
